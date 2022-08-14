@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +24,16 @@ class Category
      */
     private $title;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=BlogPost::class, inversedBy="categories")
+     */
+    private $blogpost;
+
+    public function __construct()
+    {
+        $this->blogpost = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +47,30 @@ class Category
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BlogPost>
+     */
+    public function getBlogpost(): Collection
+    {
+        return $this->blogpost;
+    }
+
+    public function addBlogpost(BlogPost $blogpost): self
+    {
+        if (!$this->blogpost->contains($blogpost)) {
+            $this->blogpost[] = $blogpost;
+        }
+
+        return $this;
+    }
+
+    public function removeBlogpost(BlogPost $blogpost): self
+    {
+        $this->blogpost->removeElement($blogpost);
 
         return $this;
     }
