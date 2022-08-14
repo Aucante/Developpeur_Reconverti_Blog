@@ -13,7 +13,17 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body class="d-flex flex-column min-vh-100">
+    <header>
+        {% include('base/navbar.html.twig') %}
+    </header>
+    <div style="height: 70px"></div>
+
+
+    {% block body %}{% endblock %}
+
+    <footer  class="mt-auto">
+        {% include('base/footer.html.twig') %}
+    </footer>
     </body>
 </html>

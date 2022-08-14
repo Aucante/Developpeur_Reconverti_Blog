@@ -1,0 +1,36 @@
+<nav class="navbar navbar-light fixed-top bg-white shadow" style="height: 71px">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('build/img/logo/Logo.svg') }}" alt="logo" height="43">
+        </a>
+        <div class="text-end">
+            <button
+                    class="navbar-toggler shadow-none border-0"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div
+                class="offcanvas offcanvas-start"
+                tabindex="-1"
+                id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel"
+        >
+            <div class="offcanvas-header">
+                <a class="navbar-brand" href="">
+                    <img src="{{ asset('build/img/logo/Logo.svg') }}" alt="logo" width="180" height="44"/>
+                </a>
+                <button
+                        type="button"
+                        class="btn-close text-reset shadow-none"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                ></button>
+            </div>
+        </div>
+    </div>
+</nav>
