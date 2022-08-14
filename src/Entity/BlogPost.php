@@ -44,9 +44,15 @@ class BlogPost
      */
     private $blogPostLikes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="blogpost")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->blogPostLikes = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,33 @@ class BlogPost
             if ($blogPostLike->getBlogpost() === $this) {
                 $blogPostLike->setBlogpost(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addBlogpost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeBlogpost($this);
         }
 
         return $this;
