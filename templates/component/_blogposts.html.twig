@@ -1,0 +1,24 @@
+<div class="container my-5">
+    {% include('./component/_pagination.html.twig') %}
+    <div class="row">
+        {% for blogpost in blogposts %}
+            <div class="col-4 my-2">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('build/img/images/image1.jpg') }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ blogpost.title }}</h5>
+                        {% for category in blogpost.category %}
+                            <span class="badge text-bg-primary">{{ category.title}}</span>
+                        {% endfor %}
+                        <p class="card-text mt-3">{{ blogpost.category }}</p>
+                        <p class="card-text">{{ blogpost.updatedAt|date("m/d/Y") }}</p>
+                        <p class="card-text"><i class="fa-solid fa-thumbs-up"></i> {{ blogpost.blogpostlikes.count}} <span class="ms-5">{{ blogpost.updatedAt|date("m/d/Y") }}</span></p>
+                        <div class="text-center">
+                            <a href="#" class="btn btn-primary container">More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -45,9 +45,10 @@ class BlogPost
     private $blogPostLikes;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="blogpost")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="annonces")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $categories;
+    private $category;
 
     public function __construct()
     {
@@ -138,29 +139,14 @@ class BlogPost
         return $this;
     }
 
-    /**
-     * @return Collection<int, Category>
-     */
-    public function getCategories(): Collection
+    public function getCategory(): ?Category
     {
-        return $this->categories;
+        return $this->category;
     }
 
-    public function addCategory(Category $category): self
+    public function setCategory(?Category $category): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addBlogpost($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeBlogpost($this);
-        }
+        $this->category = $category;
 
         return $this;
     }

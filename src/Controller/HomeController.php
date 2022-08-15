@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\BlogPostRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,20 +17,40 @@ class HomeController extends AbstractController
      */
     public function index(
         BlogPostRepository $blogPostRepository,
+        CategoryRepository $categoryRepository,
         Request $request
     ): Response
     {
+        // Establish number elements per page
         $limit = 9;
 
+        // Fetch page number
         $page = $request->query->get("page", 1);
 
-        $blogposts = $blogPostRepository->getPaginatedBlogPost($page, $limit);
+        // Fetch filters
+        $filters = $request->get("categories");
 
+        // Fetch blogposts
+        $blogposts = $blogPostRepository->getPaginatedBlogPost($page, $limit, $filters);
 
-        $total = $blogPostRepository->getTotalBlogPost();
+        // Get total number of blogpost (count)
+        $total = $blogPostRepository->getTotalBlogPost($filters);
+
+        // Check if ajax request
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'content' => $this->renderView('component/_blogposts.html.twig',
+                    compact('page', 'limit', 'blogposts', 'total')
+                )
+            ]);
+        }
+
+        // Fetch categories
+        $categories = $categoryRepository->findAll();
+
 
         return $this->render('home/index.html.twig',
-            compact('page', 'limit', 'blogposts', 'total' )
+            compact('page', 'limit', 'blogposts', 'total', 'categories')
         );
     }
 }

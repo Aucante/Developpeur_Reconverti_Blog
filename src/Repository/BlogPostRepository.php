@@ -40,9 +40,15 @@ class BlogPostRepository extends ServiceEntityRepository
     }
 
 
-    public function getPaginatedBlogPost($page, $limit) {
-        $query = $this->createQueryBuilder('b')
-            ->orderBy('b.createdAt')
+    public function getPaginatedBlogPost($page, $limit, $filters = null) {
+        $query = $this->createQueryBuilder('b');
+
+        if ($filters !== null) {
+            $query->where('b.category IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
+
+        $query->orderBy('b.createdAt')
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit)
             ;
@@ -50,9 +56,14 @@ class BlogPostRepository extends ServiceEntityRepository
     }
 
 
-    public function getTotalBlogPost() {
+    public function getTotalBlogPost($filters = null) {
         $query = $this->createQueryBuilder('b')
             ->select('COUNT(b)');
+
+        if ($filters !== null) {
+            $query->where('b.category IN(:cats)')
+                ->setParameter(':cats', array_values($filters));
+        }
         return $query->getQuery()->getSingleScalarResult();
     }
 

@@ -25,7 +25,7 @@ class Category
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity=BlogPost::class, inversedBy="categories")
+     * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="categories")
      */
     private $blogpost;
 
@@ -52,26 +52,39 @@ class Category
     }
 
     /**
-     * @return Collection<int, BlogPost>
+     * @return Collection|BlogPost[]
      */
-    public function getBlogpost(): Collection
+    public function getBlogPost(): Collection
     {
         return $this->blogpost;
     }
 
-    public function addBlogpost(BlogPost $blogpost): self
+    public function addBlogPost(BlogPost $blogpost): self
     {
         if (!$this->blogpost->contains($blogpost)) {
             $this->blogpost[] = $blogpost;
+            $blogpost->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeBlogpost(BlogPost $blogpost): self
+    public function removeBlogPost(BlogPost $blogPost): self
     {
-        $this->blogpost->removeElement($blogpost);
+        if ($this->blogpost->contains($blogPost)) {
+            $this->blogpost->removeElement($blogPost);
+            // set the owning side to null (unless already changed)
+            if ($blogPost->getCategory() === $this) {
+                $blogPost->setCategory(null);
+            }
+        }
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
 }

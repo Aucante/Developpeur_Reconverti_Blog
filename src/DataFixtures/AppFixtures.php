@@ -48,22 +48,22 @@ class AppFixtures extends Fixture
         }
 
         $categories = [];
-        for ($l = 0; $l < 4; $l++) {
+        for ($l = 1; $l < 4; $l++) {
             $category = new Category();
 
-            $category->setTitle(sprintf('categorie%d', $l));
+            $category->setTitle(sprintf('categorie %d', $l));
             $manager->persist($category);
             $categories[] = $category;
         }
 
         $blogposts = [];
-        for ($k = 0; $k < 20; $k++) {
+        for ($k = 1; $k < 20; $k++) {
             $blogpost = new BlogPost();
             $blogpost->setTitle(sprintf('titre%d', $k))
                     ->setContent('lorem')
                     ->setCreatedAt(new \DateTimeImmutable())
                     ->setUpdatedAt(new \DateTimeImmutable())
-                    ->addCategory($categories[array_rand($categories)]);
+                    ->setCategory($categories[array_rand($categories)]);
             $manager->persist($blogpost);
             $blogposts[] = $blogpost;
         }
