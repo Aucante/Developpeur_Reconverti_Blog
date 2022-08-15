@@ -3,7 +3,9 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+
     <div class="container my-5">
+        {% include('./component/_pagination.html.twig') %}
         <div class="row">
             {% for blogpost in blogposts %}
             <div class="col-4 my-2">
@@ -26,4 +28,8 @@
             {% endfor %}
         </div>
     </div>
+    {% include('./component/_pagination.html.twig') %}
+
+
+
 {% endblock %}

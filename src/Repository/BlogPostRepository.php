@@ -39,28 +39,21 @@ class BlogPostRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return BlogPost[] Returns an array of BlogPost objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?BlogPost
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getPaginatedBlogPost($page, $limit) {
+        $query = $this->createQueryBuilder('b')
+            ->orderBy('b.createdAt')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit)
+            ;
+        return $query->getQuery()->getResult();
+    }
+
+
+    public function getTotalBlogPost() {
+        $query = $this->createQueryBuilder('b')
+            ->select('COUNT(b)');
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
 }
