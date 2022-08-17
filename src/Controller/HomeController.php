@@ -22,10 +22,10 @@ class HomeController extends AbstractController
     ): Response
     {
         // Establish number elements per page
-        $limit = 9;
+        $limit = 6;
 
         // Fetch page number
-        $page = $request->query->get("page", 1);
+        $page = (int)$request->query->get("page", 1);
 
         // Fetch filters
         $filters = $request->get("categories");

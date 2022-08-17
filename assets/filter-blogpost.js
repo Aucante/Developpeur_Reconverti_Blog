@@ -21,6 +21,8 @@ window.onload = () => {
             ).then(data => {
                 const Content = document.querySelector("#blogposts");
                 Content.innerHTML = data.content;
+
+                history.pushState({}, null, Url.pathname + "?" +  Params.toString());
             }).catch(e => alert(e));
         });
     });
